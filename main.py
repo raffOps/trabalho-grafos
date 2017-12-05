@@ -18,6 +18,7 @@ def dijkstra2(matrix,m,x):
         for j in range(m):
             if tabela[0][j] > tabela[0][pos_menor] + matrix[pos_menor][j]:
                 tabela[0][j] = tabela[0][pos_menor] + matrix[pos_menor][j]
+
     print("The shortest path", nuvem)
     print("The tabela to various vertices in order", tabela)
 #vertex should start with zero
@@ -36,7 +37,7 @@ def dijkstra(matrix,m,n):
         mini=999
         for j in range(m):
             print("{0} \t {1} \t {2}".format(cost, j, offsets))
-            if cost[0][j]<=mini and j not in offsets and cost[0][j]> 0:
+            if cost[0][j]<=mini and j not in offsets:
                 mini=cost[0][j]
                 elepos=j
                 print(elepos)
@@ -59,6 +60,11 @@ def main():
             linha = linha.split(' ')
             matriz[int(linha[0])][int(linha[1])] = int(linha[2])
             matriz[int(linha[1])][int(linha[0])] = int(linha[2])
+
+    for linha in range(quant_nodos):
+        for coluna in range(quant_nodos):
+            if matriz[linha][coluna] == 0:
+                matriz[linha][coluna] = 9999
 
     print(matriz)
 
