@@ -1,26 +1,4 @@
 
-def dijkstra2(matrix,m,x):
-    tabela = [[0 for k in range(m)] for k in range(1)]
-    nuvem = []
-    nuvem.append(x)
-    pos_menor = 0
-    for j in range(m):
-        tabela[0][j] = matrix[x][j]
-    mini = 999
-    for x in range(m - 1):
-        mini = 999
-        for j in range(m):
-            print("{0} \t {1} \t {2}".format(tabela, j, nuvem))
-            if tabela[0][j] <= mini and tabela[0][j] > 0 and j not in nuvem:
-                mini = tabela[0][j]
-                pos_menor = j
-        nuvem.append(pos_menor)
-        for j in range(m):
-            if tabela[0][j] > tabela[0][pos_menor] + matrix[pos_menor][j]:
-                tabela[0][j] = tabela[0][pos_menor] + matrix[pos_menor][j]
-
-    print("The shortest path", nuvem)
-    print("The tabela to various vertices in order", tabela)
 #vertex should start with zero
 #if you are giving weight above 999 adjust min in program
 #result will be the shortest path and the distace to each vertex from source vertex in order
@@ -80,21 +58,6 @@ def main():
             #print("Opção 2: Execução completa. Mstra o estado do programa a cada iteração ")
 
             #opcao = int(input("\nDigite sua opção: "))
-def main2():
-    print("Dijkstras algorithum graph using matrix representation \n")
-    n=int(input("number of elements in row: "))
-    m=int(input("number of elements in column: "))
-    #print("enter the values of the matrix")
-    matrix=[[0 for x in range(m)] for x in range(n)]
-    for i in range (n):
-        for j in range (m):
-            if matrix[j][i] == 0:
-                matrix[i][j]=int(input("enter the values of the matrix[{0}][{1}]: ".format(i,j)))
-            else:
-                matrix[i][j] = matrix[j][i]
-    print(matrix)
-    dijkstra(matrix,m,n)
-main()
+
 
 main()
-
