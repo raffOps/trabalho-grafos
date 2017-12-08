@@ -1,5 +1,5 @@
 infinito = 9999
-nome_arquivo = "inst3.dat"
+nome_arquivo = "inst1.dat"
 
 def dijkstra(matrix, quant_nodos, x, y, opcao):
     tabela=[0 for nodo in range(quant_nodos)] # Criação da tabela de prioridade
@@ -39,18 +39,18 @@ def dijkstra(matrix, quant_nodos, x, y, opcao):
             imprime_tabela(etapa + 2, tabela, nuvem, x)
 
 def imprime_tabela(etapa, tabela, nuvem, x):
-    tabela_copia = tabela.copy()
-    for x in range(len(tabela_copia)): #Formatacao da tabela pra melhor vizualizacao na printagem
-        if x in nuvem:
-            tabela_copia[x] = str(x) + ": -"
-        elif tabela_copia[x] == infinito:
-            tabela_copia[x] = str(x) + ": Inf"
+    tabela_string = "| "
+    for k in range(len(tabela)): #Formatacao da tabela pra melhor vizualizacao na printagem
+        if k in nuvem:
+            tabela_string += str(k) + ": - | "
+        elif tabela[k] == infinito:
+            tabela_string += str(k) + ": Inf | "
         else:
-            tabela_copia[x] = str(x) + ": " + str(tabela_copia[x])
+            tabela_string += str(k) + ": " + str(tabela[k]) + " | "
     print("-" * 190)
     print(
         "Etapa {0}\nNodo sendo visitado: {1} \t Distancia para {2}: {3} \nTabela: {4} \nNuvem: {5}".format(
-            etapa, nuvem[-1], x, tabela[nuvem[-1]], tabela_copia, nuvem))
+            etapa, nuvem[-1], x, tabela[nuvem[-1]], tabela_string, nuvem))
 
 
 def main():
