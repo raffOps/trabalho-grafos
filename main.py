@@ -13,6 +13,12 @@ def dijkstra(matrix, quant_nodos, x, y, opcao):
     tabela=[0 for nodo in range(quant_nodos)] # Criação da tabela de prioridade
     nuvem = [] # Criacao da nuvem
     nuvem.append(x) # Adiciona o nodo inicial a nuvem
+
+    if x == y and opcao == '1':  # Se a opcao de saida for 1 e nodo adicionado na nuvem for y, entao a distancia
+        #  é printada e programa eh finalizado
+        print("Distancia de {0} até {1}: {2}".format(x, y, 0))
+        return
+
     for j in range(quant_nodos): # Inicializa a tabela de prioridades com as distancias de x ate seus vizinhos diretos
         tabela[j] = matrix[x][j]
 
