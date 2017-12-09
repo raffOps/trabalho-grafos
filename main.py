@@ -107,8 +107,8 @@ def main():
             matriz[x][x] = 0
             opcao = 0
             while opcao != 1 and opcao != 2:
-                print("\nOpção 1: Execucao simples. Retorna a menor distancia entre o nodo x e nodo y")
-                print("Opção 2: Execucao completa. Mostra o estado do programa a cada iteracao ")
+                print('\nOpção 1: Execucao simples. Retorna a menor distancia entre o nodo x e nodo y')
+                print('Opção 2: Execucao completa. Mostra o estado do programa a cada iteracao ')
                 opcao = int(input("\nDigite sua opcao: "))
             dijkstra(matriz, quant_nodos, x, y, opcao)
             print("-" * 170)
