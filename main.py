@@ -13,10 +13,8 @@ def dijkstra(matrix, quant_nodos, x, y, opcao):
     :param opcao:
     :return:
     """
-    tabela=[0 for nodo in range(quant_nodos)] # Criação da tabela de prioridade
-    nuvem = [] # Criacao da nuvem para percorrimento
-    nuvem.append(x) # Adiciona o nodo inicial a nuvem
-
+    tabela = [0 for _ in range(quant_nodos)]
+    nuvem = [x]
     if x == y and opcao == 1:  # Se a opcao de saida for 1 e nodo adicionado na nuvem for y, entao a distancia
         #  é printada e programa eh finalizado
         print('Distância de {0} até {1}: {2}'.format(x, y, 0))
@@ -38,20 +36,12 @@ def dijkstra(matrix, quant_nodos, x, y, opcao):
                 mini = tabela[j]
                 elepos = j
         nuvem.append(elepos) # O nodo que estiver mais perto do nodo visitado anteriormente eh adicionado na nuvem
-                                        # junto com a distancia entre eles
         if elepos == y and opcao == 1: # Se a opcao de saida for 1 e nodo adicionado na nuvem for y, entao a distancia
                                        #  é printada e programa eh finalizado
             print('Distância de {0} até {1}: {2}'.format(x, y, mini))
             return
         for j in range(quant_nodos):
-            if tabela[j] > tabela[elepos] + matrix[elepos][j]: # Atualizacao da tabela. Se o valor de j na tabela
-                                                                # for maior que a distancia do ultimo
-                                                                # nodo adicionado na nuvem + a distancia desse nodo para
-                                                                # os seus vizinhos na matriz, então j é atualizado com
-                                                                # esse valor menor
-
-                tabela[j] = tabela[elepos] + matrix[elepos][j]
-
+            tabela[j] = min(tabela[j], tabela[elepos] + matrix[elepos][j])
         if opcao == 2:#Printagem das saidas caso a opcao seja 2
             imprime_dados(etapa + 2, tabela, nuvem, x)
 
@@ -67,11 +57,11 @@ def imprime_dados(etapa, tabela, nuvem, x):
     tabela_string = '| '
     for k in range(len(tabela)):
         if k in nuvem:
-            tabela_string += str(k) + ': - | '
+            tabela_string += f'{str(k)}: - | '
         elif tabela[k] == infinito:
-            tabela_string += str(k) + ': Inf | '
+            tabela_string += f'{str(k)}: Inf | '
         else:
-            tabela_string += str(k) + ': ' + str(tabela[k]) + ' | '
+            tabela_string += f'{str(k)}: {str(tabela[k])} | '
     print("-" * 170)
     print(
         'Etapa {0}\nNodo sendo visitado: {1} \t Distância para {2}: {3} \n\nTabela: {4} \n\nNuvem: {5}'.format(
@@ -86,45 +76,43 @@ def main():
         opcao_menu1 = int(input('Digite sua opção: '))
     if opcao_menu1 == 0:
         return
+    try:
+        arquivo = open(input('Digite o nome do arquivo: '))  # abertura do arquivo
+    except FileNotFoundError:
+        print('Arquivo não encontrado')
     else:
-        try:
-            arquivo = open(input('Digite o nome do arquivo: '))  # abertura do arquivo
-        except FileNotFoundError:
-            print('Arquivo não encontrado')
-        else:
-            with arquivo:
-                primeira_linha = next(arquivo).split(' ')
-                quant_nodos, quant_arestas = int(primeira_linha[0]), int(
-                    primeira_linha[1])  # extracao da primeira linha
+        with arquivo:
+            primeira_linha = next(arquivo).split(' ')
+            quant_nodos, quant_arestas = int(primeira_linha[0]), int(
+                primeira_linha[1])  # extracao da primeira linha
 
-                matriz = [[0 for x in range(quant_nodos)] for x in
-                          range(quant_nodos)]  # criacao da matriz de acordo com os
-                # dados da primeira linha
-                for linha in arquivo:  # Valores sendo atribuidos a matriz
-                    linha = linha.split(' ')
-                    matriz[int(linha[0])][int(linha[1])] = int(linha[2])
-                    matriz[int(linha[1])][int(linha[0])] = int(linha[2])
+            matriz = [[0 for _ in range(quant_nodos)] for _ in range(quant_nodos)]
+            # dados da primeira linha
+            for linha in arquivo:  # Valores sendo atribuidos a matriz
+                linha = linha.split(' ')
+                matriz[int(linha[0])][int(linha[1])] = int(linha[2])
+                matriz[int(linha[1])][int(linha[0])] = int(linha[2])
 
-            for linha in range(quant_nodos):  # Troca valores 0 por valor que representa o infinito
-                for coluna in range(quant_nodos):
-                    if matriz[linha][coluna] == 0:
-                        matriz[linha][coluna] = infinito
+        for linha in range(quant_nodos):  # Troca valores 0 por valor que representa o infinito
+            for coluna in range(quant_nodos):
+                if matriz[linha][coluna] == 0:
+                    matriz[linha][coluna] = infinito
 
 
-        continuar = True
-        while continuar:
-            os.system('cls')
-            x = int(input('\nDigite o nodo inicial (entre 0 e {}): '.format(quant_nodos-1)))
-            y = int(input('Digite o nodo final (entre 0 e {}): '.format(quant_nodos-1)))
-            matriz[x][x] = 0
-            opcao = 0
-            while opcao != 1 and opcao != 2:
-                print('\nOpção 1: Execução simples. Retorna a menor distância entre o nodo x e nodo y')
-                print('Opção 2: Execução completa. Mostra o estado do programa a cada iteração ')
-                opcao = int(input("\nDigite sua opção: "))
-            dijkstra(matriz, quant_nodos, x, y, opcao)
-            print("-" * 170)
-            continuar = int(input('\nExecutar o dijkstra novamente? 1 para sim, 0 para Não: '))
+    continuar = True
+    while continuar:
+        os.system('cls')
+        x = int(input(f'\nDigite o nodo inicial (entre 0 e {quant_nodos - 1}): '))
+        y = int(input(f'Digite o nodo final (entre 0 e {quant_nodos - 1}): '))
+        matriz[x][x] = 0
+        opcao = 0
+        while opcao not in [1, 2]:
+            print('\nOpção 1: Execução simples. Retorna a menor distância entre o nodo x e nodo y')
+            print('Opção 2: Execução completa. Mostra o estado do programa a cada iteração ')
+            opcao = int(input("\nDigite sua opção: "))
+        dijkstra(matriz, quant_nodos, x, y, opcao)
+        print("-" * 170)
+        continuar = int(input('\nExecutar o dijkstra novamente? 1 para sim, 0 para Não: '))
 
 
 main()
